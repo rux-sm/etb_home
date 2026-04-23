@@ -1,0 +1,339 @@
+/* ==========================================================================
+   BUTTONS & CONTROLS
+   ==========================================================================
+   Sections (in order):
+    #1  button, .btn          — element reset + shared base + :hover :active
+    #2  Global States         — :focus-visible + icons + :disabled
+    #3  .btn--accent          — :hover  :active
+    #4  .btn--default         — :hover  :active
+    #5  .btn--danger          — :hover  :active
+    #6  .btn--compact         — size modifier (height, padding)
+    #7  .btn--ghost           — :hover  :active
+    #8  .btn--icon            — :hover  :active  [aria-pressed]  .material-symbols-outlined
+    #9  .btn--toggle          — :hover  :active  [aria-pressed]  .is-active  __icon  -grid
+    #10 Form Actions          — .form-actions  --footer  __group
+    #11 Responsive            — @media max-width: 899px
+   ========================================================================== */
+
+/* ── 1. Resets & Core Base ──────────────────────────────────────────────── */
+
+button {
+  all: unset;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+/* Shared layout + typography — both .btn and .btn--toggle */
+.btn,
+.btn--toggle {
+  /* Layout */
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  /* Increased to 34px for better optical balance with squircles */
+  height: 32px;
+  padding: 0 16px;
+
+  /* Typography */
+  font-family: var(--font-sans);
+  font-size: 14px;
+  /* Dropped from 16px for that 'Pro' utility look */
+  font-weight: 500;
+  /* Medium weight holds up better on black backgrounds */
+  line-height: 1;
+  letter-spacing: 0.0em;
+  /* Subtle Apple-style tightening */
+  text-decoration: none;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-user-select: none;
+
+  /* Squircle shape: border-radius is the rendered curve.
+     corner-shape: squircle is a forward-looking CSS property with limited
+     browser support as of 2025 — kept here as progressive enhancement.
+     Browsers that don't support it fall back to the border-radius value.
+     Uses --rux-radius-button (depth 0 in the optical radius scale). */
+  border-radius: var(--rux-radius-button);
+
+  cursor: pointer;
+
+  /* Transitions */
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    transform 0.1s ease;
+}
+
+/* Aluminum visual defaults — unstyled .btn only (variants own their colors) */
+.btn {
+  background-color: var(--btn-base-bg);
+  color: var(--btn-base-text);
+  border: 1px solid var(--btn-base-border);
+  min-width: var(--btn-min-width, 80px);
+}
+
+/* Base hover/active — scoped away from variants to prevent border-color bleed */
+.btn:not(.btn--accent):not(.btn--default):not(.btn--danger):not(.btn--ghost):hover {
+  background-color: var(--btn-base-hover-bg);
+}
+
+.btn:not(.btn--accent):not(.btn--default):not(.btn--danger):not(.btn--ghost):active {
+  background-color: var(--btn-base-active-bg);
+}
+
+/* Press transform applies to all .btn variants */
+.btn:active {
+  transform: scale(0.97);
+}
+
+/* ── 2. Focus, Icons & Global States ────────────────────────────────────── */
+
+.btn:focus-visible,
+.btn--toggle:focus-visible,
+.btn--icon:focus-visible {
+  outline: 2px solid var(--rux-accent-color);
+  border-color: transparent;
+}
+
+.btn .material-symbols-outlined,
+.btn--toggle .material-symbols-outlined,
+.btn--toggle__icon {
+  font-size: 24px;
+  font-variation-settings:
+    "FILL" var(--btn-icon-fill, 0),
+    "wght" var(--btn-icon-wght, 400),
+    "GRAD" var(--btn-icon-grad, -25),
+    "opsz" var(--btn-icon-opsz, 20);
+}
+
+.btn:disabled,
+.btn[aria-disabled="true"],
+.btn--toggle:disabled,
+.btn--toggle[aria-disabled="true"],
+.btn--icon:disabled,
+.btn--icon[aria-disabled="true"] {
+  background-color: var(--rux-surface-modal) !important;
+  color: var(--text-disabled) !important;
+  box-shadow: none !important;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ── 3. Accent (Save, Copy, Print) ──────────────────────────────────────── */
+
+.btn--accent {
+  background-color: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  border-color: var(--btn-primary-border);
+  box-shadow: var(--btn-shadow-inset);
+}
+
+.btn--accent:hover {
+  background-color: var(--btn-primary-hover);
+}
+
+.btn--accent:active {
+  background-color: var(--btn-primary-active);
+  box-shadow: var(--btn-shadow-active);
+}
+
+/* ── 4. Default (Cancel, Clear) ─────────────────────────────────────────── */
+
+.btn--default {
+  background-color: var(--btn-secondary-bg);
+  color: var(--btn-secondary-text);
+  border-color: var(--btn-secondary-border);
+  box-shadow: var(--btn-shadow-inset);
+}
+
+.btn--default:hover {
+  background-color: var(--btn-secondary-hover);
+}
+
+.btn--default:active {
+  background-color: var(--btn-secondary-active);
+  box-shadow: var(--btn-shadow-active);
+}
+
+/* ── 5. Danger (Delete) ─────────────────────────────────────────────────── */
+
+.btn--danger {
+  background-color: var(--btn-danger-bg);
+  color: var(--btn-danger-text);
+  border-color: var(--btn-danger-border);
+  box-shadow: var(--btn-shadow-inset);
+}
+
+.btn--danger:hover {
+  background-color: var(--btn-danger-hover);
+}
+
+.btn--danger:active {
+  background-color: var(--btn-danger-active);
+  box-shadow: var(--btn-shadow-active);
+}
+
+/* ── 6. Compact (Size Modifier) ─────────────────────────────────────────── */
+
+.btn--compact {
+  height: var(--btn-compact-height);
+  min-width: 0;
+  padding: 0 var(--btn-compact-padding-x);
+}
+
+/* ── 7. Ghost (Prev, Next, Week, Today) ─────────────────────────────────── */
+
+.btn--ghost {
+  background-color: var(--btn-ghost-bg);
+  border-color: var(--btn-ghost-border);
+  color: var(--btn-ghost-text);
+  text-shadow: var(--btn-ghost-text-shadow);
+  box-shadow: none;
+}
+
+.btn--ghost:hover {
+  background-color: var(--btn-ghost-hover-bg);
+  box-shadow: none;
+}
+
+.btn--ghost:active {
+  background-color: var(--btn-ghost-active-bg);
+  border-color: var(--border-default);
+  box-shadow: none;
+}
+
+/* ── 8. .btn--icon (48×48, app header — Trip, Drivers, Settings…) ────────── */
+
+.btn--icon {
+  /* Layout */
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  padding: 0;
+
+  /* Visuals */
+  border: 1px solid transparent;
+  background-color: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+
+  /* Transitions */
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.btn--icon:hover {
+  background-color: oklch(from var(--rux-surface-panel) calc(l + var(--rux-button-hover)) c h);
+}
+
+.btn--icon:active {
+  background-color: var(--btn-toggle-active-bg);
+  box-shadow: var(--btn-shadow-active-sm);
+}
+
+.btn--icon[aria-pressed="true"] {
+  background-color: var(--btn-toggle-active-bg);
+  border-color: transparent;
+  box-shadow: var(--btn-shadow-active-sm);
+  --btn-icon-fill: 1;
+}
+
+.btn--icon .material-symbols-outlined {
+  font-size: 22px;
+  font-variation-settings:
+    'opsz' 24,
+    'wght' 400,
+    'GRAD' 0,
+    'FILL' var(--btn-icon-fill, 0);
+  transition: font-variation-settings var(--transition-fast);
+}
+
+/* ── 9. Toggle (Requirements) ───────────────────────────────────────────── */
+
+/* Toggle owns its own visual defaults — does not inherit aluminum from .btn */
+.btn--toggle {
+  background-color: var(--btn-toggle-bg);
+  color: var(--btn-toggle-text);
+  border: 1px solid var(--btn-toggle-border);
+  box-shadow: var(--btn-shadow-inset);
+  justify-content: center;
+  padding: 0 8px;
+  width: 100%;
+}
+
+.btn--toggle:hover {
+  background-color: var(--btn-toggle-hover-bg);
+}
+
+.btn--toggle:active {
+  background-color: var(--btn-toggle-active-bg);
+  box-shadow: var(--btn-shadow-active);
+}
+
+.btn--toggle[aria-pressed="true"],
+.btn--toggle.is-active {
+  background-color: var(--btn-toggle-active-bg);
+  border-color: transparent;
+  color: var(--btn-primary-text);
+  box-shadow: var(--btn-shadow-active);
+  --btn-icon-fill: 1;
+}
+
+/* Toggle button icon */
+.btn--toggle .btn--toggle__icon {
+  opacity: var(--btn-toggle-icon-opacity);
+  transition:
+    opacity var(--transition-fast),
+    font-variation-settings var(--transition-fast);
+}
+
+.btn--toggle:hover .btn--toggle__icon,
+.btn--toggle:active .btn--toggle__icon,
+.btn--toggle[aria-pressed="true"] .btn--toggle__icon,
+.btn--toggle.is-active .btn--toggle__icon {
+  opacity: 1;
+}
+
+/* Requirement sub-group label */
+.req-group-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin: 12px 0 0;
+}
+
+/* Toggle button grid layout */
+.btn--toggle-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: var(--form-section-gap);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ── 10. Form Action Containers ─────────────────────────────────────────── */
+
+.form-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.form-actions>.btn {
+  flex: 1;
+}
+
+/* ── 11. Responsive ─────────────────────────────────────────────────────── */

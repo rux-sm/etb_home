@@ -1,0 +1,585 @@
+/* ==========================================================================
+   Trip Bar (BEM - Step 12a)
+   JS adds schedule-grid__trip-bar class; legacy trip-bar kept for print clone
+   alongside trip-bar. Remove legacy in Step 12b.
+   ========================================================================== */
+.schedule-grid__trip-bar {
+  display: grid;
+  grid-template-rows:
+    var(--tripbar-r1-row-height) var(--tripbar-r2-row-height) var(--tripbar-r3-row-height) var(--tripbar-r4-row-height) var(--tripbar-r5-row-height) var(--tripbar-r6-row-height) var(--tripbar-r7-row-height);
+  row-gap: var(--tripbar-row-gap);
+  container-type: inline-size;
+  align-content: center;
+  position: absolute;
+  z-index: 501;
+  /* above sticky bus cell (500) so trip bar receives hover when overlapping */
+  height: var(--tripbar-height);
+  max-height: var(--tripbar-height);
+  box-sizing: border-box;
+  padding: var(--tripbar-padding-y) var(--tripbar-padding-x);
+  text-shadow: var(--tripbar-text-shadow);
+
+  border-radius: var(--tripbar-radius);
+  overflow: hidden;
+  cursor: pointer;
+  pointer-events: auto;
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast),
+    filter var(--transition-fast),
+    border-color var(--transition-fast),
+    outline-color var(--transition-fast);
+  will-change: transform, filter, box-shadow;
+
+  --trip-accent-color: var(--rux-color-mana);
+
+  /* Background LCHA */
+  --tripbar-bg-l: 60%;
+  --tripbar-bg-c: 0.2;
+  --tripbar-bg-h: 0;
+  --tripbar-bg-a: 20%;
+
+  /* Border LCHA */
+  --tripbar-border-l: 65%;
+  --tripbar-border-c: 0.2;
+  --tripbar-border-h: 0;
+  --tripbar-border-a: 100%;
+
+  /* Border-left LCHA */
+  --tripbar-border-left-l: 65%;
+  --tripbar-border-left-c: 0.2;
+  --tripbar-border-left-h: 0;
+  --tripbar-border-left-a: 100%;
+
+  /* Text LCHA */
+  --tripbar-text-l: 65%;
+  --tripbar-text-c: 0.2;
+  --tripbar-text-h: 0;
+  --tripbar-text-a: 100%;
+
+  --tripbar-bg: oklch(from var(--trip-accent-color) var(--tripbar-bg-l) var(--tripbar-bg-c) calc(h + var(--tripbar-bg-h)) / var(--tripbar-bg-a));
+  --tripbar-border-color: oklch(from var(--trip-accent-color) var(--tripbar-border-l) var(--tripbar-border-c) calc(h + var(--tripbar-border-h)) / var(--tripbar-border-a));
+  --tripbar-border-left-color: oklch(from var(--trip-accent-color) var(--tripbar-border-left-l) var(--tripbar-border-left-c) calc(h + var(--tripbar-border-left-h)) / var(--tripbar-border-left-a));
+  --tripbar-text-color: oklch(from var(--trip-accent-color) var(--tripbar-text-l) var(--tripbar-text-c) calc(h + var(--tripbar-text-h)) / var(--tripbar-text-a));
+
+  background: var(--tripbar-bg);
+  border: 1px solid var(--tripbar-border-color);
+  border-left: 7px solid var(--tripbar-border-left-color);
+}
+
+/* Hover: subtle lift + gentle brighten */
+.schedule-grid__trip-bar:hover {
+  z-index: 600;
+  --tripbar-bg-l: 55%;
+  --tripbar-bg-a: 28%;
+  cursor: pointer;
+  transform: translateY(-0px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Active: press down */
+.schedule-grid__trip-bar:active {
+  transform: translateY(0px) scale(0.99);
+  --tripbar-bg-l: 55%;
+  --tripbar-bg-a: 20%;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+/* Selected: white borders + accent ring */
+.schedule-grid__trip-bar.selected {
+  z-index: 600;
+  --tripbar-bg-l: 65%;
+  --tripbar-bg-a: 20%;
+  border-color: rgba(255, 255, 255, 1);
+  border-left-color: rgba(255, 255, 255, 1);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.schedule-grid__trip-bar.danger::after {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  content: "!";
+  position: absolute;
+  top: var(--tripbar-danger-offset);
+  inset-inline-end: var(--tripbar-danger-offset);
+  width: var(--tripbar-danger-size);
+  height: var(--tripbar-danger-size);
+  font-size: var(--tripbar-danger-font);
+  font-weight: 700;
+  color: var(--rux-status-red);
+  background: var(--rux-status-red-alpha);
+  border-radius: 999px;
+  box-shadow: 0 0 6px color-mix(in srgb, var(--rux-status-red) 50%, transparent);
+}
+
+/* Color variants — only override the accent variable;
+   the base rule's glass gradient + color-mix background
+   automatically picks up the new --tripbar-color. */
+.schedule-grid__trip-bar {
+  --tripbar-r1-color: var(--tripbar-text-color);
+  --tripbar-r2-color: var(--tripbar-text-color);
+  --tripbar-r3-color: var(--tripbar-text-color);
+  --tripbar-r4-color: var(--tripbar-text-color);
+  --tripbar-r5-color: var(--tripbar-text-color);
+  --tripbar-r6-color: var(--tripbar-text-color);
+
+  --tripbar-badge-text-color: var(--rux-status-red);
+  --tripbar-status-pending-bg: var(--rux-status-red-alpha);
+  --tripbar-status-pending-color: color-mix(in srgb,
+      var(--rux-status-red) 25%,
+      oklch(from var(--rux-color-gray) 8% c h));
+  --tripbar-status-ok-bg: var(--rux-color-wine);
+
+  &.out-of-service {
+    --tripbar-color: var(--rux-status-red-alpha);
+    background: repeating-linear-gradient(-45deg,
+        color-mix(in srgb, var(--rux-status-red-alpha) 10%, transparent),
+        color-mix(in srgb, var(--rux-status-red-alpha) 10%, transparent) 8px,
+        color-mix(in srgb, var(--rux-status-red-alpha) 50%, transparent) 8px,
+        color-mix(in srgb, var(--rux-status-red-alpha) 50%, transparent) 16px);
+    border: 1px solid color-mix(in srgb, var(--rux-status-red-alpha) 0%, transparent);
+    border-left: none;
+
+    /* Overrides for crisp text and recessed look */
+    opacity: 1;
+    box-shadow: none;
+
+    /* Hide irrelevant fields: Subtitle, Contact, Time, Status Row, Drivers */
+    .schedule-grid__trip-bar__row--2,
+    .schedule-grid__trip-bar__row--3,
+    .schedule-grid__trip-bar__row--4,
+    .schedule-grid__trip-bar__row--5,
+    .schedule-grid__trip-bar__row--7 {
+      visibility: hidden;
+      height: 0;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Adjust layout to just show Destination (row 1) and Notes (row 6) */
+    grid-template-rows: auto auto !important;
+    align-content: start;
+    padding-top: 8px;
+    gap: 4px;
+
+    .schedule-grid__trip-bar__row--1,
+    .schedule-grid__trip-bar__row--6 {
+      grid-row: auto;
+      /* let it flow naturally */
+    }
+
+    /* Give destination text slightly more prominence */
+    .schedule-grid__trip-bar__title {
+      font-size: 0.875rem;
+      /* 14px */
+    }
+  }
+
+  &.one-way {
+    background: repeating-linear-gradient(-45deg,
+        color-mix(in srgb, var(--trip-accent-color) 25%, transparent),
+        color-mix(in srgb, var(--trip-accent-color) 25%, transparent) 8px,
+        color-mix(in srgb, var(--trip-accent-color) 5%, transparent) 8px,
+        color-mix(in srgb, var(--trip-accent-color) 5%, transparent) 16px);
+    border: 1px solid var(--tripbar-border-color);
+    border-left: 7px solid var(--tripbar-border-left-color);
+  }
+
+  &.unconfirmed {
+    --trip-accent-color: var(--rux-color-wine);
+  }
+
+  &.color-green {
+    --trip-accent-color: var(--rux-color-celt);
+  }
+
+  &.color-yellow {
+    --trip-accent-color: var(--rux-color-sand);
+  }
+
+  &.color-purple {
+    --trip-accent-color: var(--rux-color-void);
+  }
+
+  &.color-pink {
+    --trip-accent-color: var(--rux-color-pink);
+  }
+
+  &.color-orange {
+    --trip-accent-color: var(--rux-color-dusk);
+  }
+
+  &.color-teal {
+    --trip-accent-color: var(--rux-color-teal);
+  }
+
+  &.color-cyan {
+    --trip-accent-color: var(--rux-color-cyan);
+  }
+
+}
+
+.schedule-grid__trip-bar__row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  min-width: 0;
+  padding-inline: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.schedule-grid__trip-bar__title:empty,
+.schedule-grid__trip-bar__sub:empty,
+.schedule-grid__trip-bar__pre-drivers:empty {
+  visibility: hidden;
+}
+
+.schedule-grid__trip-bar__row--1 {
+  grid-row: 1;
+  position: relative;
+}
+
+.schedule-grid__trip-bar__row--2 {
+  grid-row: 2;
+}
+
+.schedule-grid__trip-bar__row--3 {
+  grid-row: 3;
+}
+
+.schedule-grid__trip-bar__row--4 {
+  grid-row: 4;
+}
+
+.schedule-grid__trip-bar__row--5 {
+  grid-row: 5;
+}
+
+.schedule-grid__trip-bar__row--6 {
+  grid-row: 6;
+}
+
+.schedule-grid__trip-bar__row--7 {
+  grid-row: 7;
+}
+
+.schedule-grid__trip-bar__title {
+  display: block;
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+  font-size: var(--tripbar-r1-font-size);
+  font-weight: var(--tripbar-r1-font-weight);
+  line-height: var(--tripbar-r1-line-height);
+  letter-spacing: var(--tripbar-r1-letter-spacing);
+  text-transform: uppercase;
+  color: var(--tripbar-r1-color);
+  text-shadow: var(--text-shadow);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.schedule-grid__trip-bar__multi-badge {
+  flex-shrink: 0;
+  order: -1;
+  font-size: var(--tripbar-multi-badge-font-size);
+  font-weight: 500;
+  color: var(--tripbar-r1-color);
+  text-shadow: var(--text-shadow);
+  border-radius: 999px;
+  border: none;
+  box-sizing: border-box;
+  width: auto;
+  height: 11px;
+  padding-inline: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  text-align: center;
+}
+
+
+.schedule-grid__trip-bar__paid-badge {
+  flex-shrink: 0;
+  order: 1;
+  font-size: 14px;
+  font-weight: 400;
+  font-variation-settings: 'FILL' 0, 'opsz' 10;
+  color: var(--rux-status-green);
+  text-shadow: var(--text-shadow);
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.schedule-grid__trip-bar__paid-badge.is-alert {
+  color: var(--rux-status-red);
+}
+
+
+.schedule-grid__trip-bar__sub {
+  font-size: var(--tripbar-r2-font-size);
+  font-weight: var(--tripbar-r2-font-weight);
+  line-height: var(--tripbar-r2-line-height);
+  letter-spacing: var(--tripbar-r2-letter-spacing);
+  text-transform: uppercase;
+  color: var(--tripbar-r2-color);
+  text-shadow: var(--text-shadow);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.schedule-grid__trip-bar__time-row {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between !important;
+  width: 100%;
+  padding-inline: 1px;
+  font-size: var(--tripbar-r4-font-size);
+  font-weight: var(--tripbar-r4-font-weight);
+  line-height: var(--tripbar-r4-line-height);
+  letter-spacing: var(--tripbar-r4-letter-spacing);
+  text-shadow: var(--text-shadow);
+  text-transform: uppercase;
+  color: var(--tripbar-r4-color);
+  white-space: nowrap;
+}
+
+.schedule-grid__trip-bar__time {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  color: var(--tripbar-time-color);
+}
+
+.schedule-grid__trip-bar__time[data-severity="flagged"] {
+  color: var(--tripbar-time-color-flagged);
+}
+
+.schedule-grid__trip-bar__time--left {
+  justify-content: flex-start !important;
+}
+
+.schedule-grid__trip-bar__time--center {
+  justify-content: center !important;
+}
+
+.schedule-grid__trip-bar__time--right {
+  justify-content: flex-end !important;
+}
+
+.schedule-grid__trip-bar__status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--tripbar-gap-inline);
+  width: 100%;
+}
+
+.schedule-grid__trip-bar__req-icons {
+  display: flex;
+  align-items: center;
+  gap: var(--tripbar-gap-inline);
+  flex-shrink: 0;
+}
+
+/* REQ ICON and STATUS BADGE styling moved to _icons.css */
+
+.schedule-grid__trip-bar__status-badges {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--tripbar-gap-inline);
+  flex: 1;
+  min-width: 0;
+}
+
+.schedule-grid__trip-bar__mini-badge {
+  /* Layout remains if needed, but styling is in .icon-status now */
+  color: color-mix(in srgb, var(--tripbar-text-color) 30%, transparent);
+}
+
+/* MINI BADGE glyph styling moved to _icons.css */
+
+.schedule-grid__trip-bar__mini-badge.is-pending {
+  background: transparent;
+  color: var(--rux-status-red);
+}
+
+.schedule-grid__trip-bar__mini-badge.is-ok {
+  background: transparent;
+  color: var(--tripbar-r5-color);
+}
+
+.schedule-grid__trip-bar__mini-badge.is-blue {
+  background: transparent;
+  color: var(--tripbar-r5-color);
+}
+
+.schedule-grid__trip-bar__mini-badge.is-yellow {
+  background: transparent;
+  color: var(--rux-status-yellow);
+}
+
+.schedule-grid__trip-bar__mini-badge.has-pdf,
+.schedule-grid__trip-bar__mini-badge.has-action {
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.schedule-grid__trip-bar__mini-badge.has-pdf:hover,
+.schedule-grid__trip-bar__mini-badge.has-action:hover {
+  transform: scale(1.15);
+  color: var(--text-primary);
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.schedule-grid__trip-bar__mini-badge.has-text {
+  width: auto;
+  padding-inline-end: 2px;
+  gap: 0;
+  color: var(--tripbar-r5-color);
+}
+
+.schedule-grid__trip-bar__mini-badge .schedule-grid__trip-bar__mini-badge-text {
+  color: var(--tripbar-badge-text-color);
+  background-color: transparent;
+}
+
+/* Invoice number text uses the standard trip bar color, not the badge accent color */
+.schedule-grid__trip-bar__mini-badge .icon-invoice-text {
+  color: var(--tripbar-r5-color);
+}
+
+.schedule-grid__trip-bar__pre-drivers {
+  font-size: var(--tripbar-r6-font-size);
+  font-weight: var(--tripbar-r6-font-weight);
+  line-height: var(--tripbar-r6-line-height);
+  letter-spacing: var(--tripbar-r6-letter-spacing);
+  text-transform: uppercase;
+  color: var(--tripbar-r6-color);
+  text-shadow: var(--text-shadow);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.schedule-grid__trip-bar__drivers {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--tripbar-gap-drivers, 6px);
+}
+
+.schedule-grid__trip-bar__driver-slot {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+}
+
+.schedule-grid__trip-bar__driver-slot .schedule-grid__trip-bar__mini-badge {
+  flex-shrink: 0;
+  font-size: var(--tripbar-r7-font-size);
+  line-height: 1;
+}
+
+.schedule-grid__trip-bar__driver {
+  font-size: var(--tripbar-r7-font-size);
+  font-weight: var(--tripbar-r7-font-weight);
+  line-height: var(--tripbar-r7-line-height);
+  letter-spacing: var(--tripbar-r7-letter-spacing);
+  justify-content: center;
+  text-transform: uppercase;
+  color: var(--tripbar-r7-color);
+  text-shadow: var(--text-shadow);
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.schedule-grid__trip-bar.cont-left {
+  border-inline-start: none;
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+}
+
+/* ── cont-left: arrival time gets the full row width ───────────────────────
+   isStartDay is always false on cont-left bars so left/center are empty.
+   Collapse them to zero so the right (arrival) item owns the whole row. */
+.schedule-grid__trip-bar.cont-left .schedule-grid__trip-bar__time--left,
+.schedule-grid__trip-bar.cont-left .schedule-grid__trip-bar__time--center {
+  flex: 0;
+  overflow: hidden;
+}
+
+
+.schedule-grid__trip-bar.cont-right {
+  border-inline-end: none;
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+}
+
+
+/* ── Time row: scale down font on narrow bars so all 3 times stay visible ── */
+@container (max-width: 175px) {
+  .schedule-grid__trip-bar__time-row {
+    font-size: 0.65rem;
+    letter-spacing: -0.01em;
+  }
+}
+
+/* ── Single-column partial bars: show only the colored bar ──────────────────
+   cont-single = the bar occupies exactly one day column AND continues
+   left or right (trip started/ends outside this week). Only hide content
+   when the bar is physically narrow — wide single-column bars still show data. */
+@container (max-width: 120px) {
+  .schedule-grid__trip-bar.cont-single {
+
+    /* Collapse all content rows — keep row 4 (time row) visible */
+    .schedule-grid__trip-bar__row--1,
+    .schedule-grid__trip-bar__row--2,
+    .schedule-grid__trip-bar__row--3,
+    .schedule-grid__trip-bar__row--5,
+    .schedule-grid__trip-bar__row--6,
+    .schedule-grid__trip-bar__row--7 {
+      visibility: hidden;
+      height: 0;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Always hide spot time — it would overlap the chevron arrows */
+    .schedule-grid__trip-bar__time--center {
+      display: none;
+    }
+  }
+
+  /* cont-right: trip continues into next week → show departure (left) only */
+  .schedule-grid__trip-bar.cont-single.cont-right {
+    .schedule-grid__trip-bar__time--right {
+      display: none;
+    }
+  }
+
+  /* cont-left: trip came from previous week → show arrival (right) only     */
+  /* No extra rule needed — base .cont-left already collapses left + center. */
+}

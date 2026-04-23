@@ -1,0 +1,237 @@
+/* ==========================================================================
+   4-OBJECTS / LAYOUT
+   Structural wrappers, grid systems, no cosmetics
+   ========================================================================== */
+/* This file contains the app shell + object layout + responsive form grid structure. */
+
+/* --- APP SHELL BASE (.app, .main, .container) --- */
+.app {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+.main {
+  padding: 0 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  /* Keep the app shell as the scroll owner, not .main. */
+  flex: 1;
+}
+
+.container {
+  max-width: var(--layout-container-max);
+  margin: 0 auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: visible;
+  /* Allow overlays/dropdowns to escape container bounds. */
+}
+
+
+/* --- LAYOUT PANELS (Sidebars & Main Schedule Area) --- */
+.o-app-layout {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  flex: 1;
+  overflow: visible;
+  min-height: 0;
+  gap: var(--layout-panel-gap);
+}
+
+.o-app-layout__sidebar--right,
+.o-app-layout__sidebar--left,
+.o-app-layout__main {
+  min-width: 0;
+}
+
+/* Margin below center schedule card only */
+.o-app-layout__main {
+  padding-bottom: var(--space-xl);
+}
+
+/* Sidebar symmetry: structural reset only (visual skin lives in component layer) */
+.o-app-layout__sidebar--left:not(.is-collapsed),
+.o-app-layout__sidebar--right:not(.is-collapsed) {
+  padding: 0;
+  margin: 0;
+  /* box-shadow removed for flat UI */
+}
+
+.o-app-layout__main>.c-card {
+  height: auto;
+  /* Match table height; avoid forced stretch. */
+  max-height: 100%;
+
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+
+  overflow: visible;
+  /* Let the table container own scrolling. */
+}
+
+.o-app-layout__main .schedule-grid-container {
+  overflow-x: auto;
+  min-height: 0;
+}
+
+.o-app-layout.is-resizing .o-app-layout__main .schedule-grid-container {
+  overflow-x: hidden;
+}
+
+.schedule-grid-container--fluid {
+  flex: 1;
+  min-height: 0;
+}
+
+
+.o-app-layout__main {
+  flex: 1;
+  order: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+  align-items: stretch;
+  position: relative;
+  z-index: 1;
+}
+
+.o-app-layout__main>.c-card {
+  height: auto;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+  box-shadow: none;
+}
+
+.o-app-layout__main .schedule-grid-container {
+  flex: 1;
+  min-height: 0;
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+.o-app-layout__sidebar--left,
+.o-app-layout__sidebar--right {
+  width: var(--panel-width);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  border-right: none;
+  transition:
+    width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    margin 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: visible;
+}
+
+.o-app-layout__sidebar--left {
+  order: 0;
+}
+
+.o-app-layout__sidebar--right {
+  order: 2;
+}
+
+.o-app-layout__sidebar--left.is-collapsed,
+.o-app-layout__sidebar--right.is-collapsed {
+  width: 0 !important;
+  margin: 0 !important;
+  pointer-events: none;
+}
+
+.o-app-layout__sidebar--left>.c-card,
+.o-app-layout__sidebar--right>.c-card {
+  position: fixed;
+  top: calc(var(--size-header-row) + var(--rux-space-3));
+  bottom: var(--rux-space-3);
+  width: var(--panel-width);
+  box-shadow: 0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 1px 3px 0px rgba(0, 0, 0, 0.3);
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.2s ease;
+}
+
+.o-app-layout__sidebar--left>.c-card {
+  left: 0;
+  border-radius: 0 16px 16px 0 !important;
+  transform: translateX(0);
+}
+
+.o-app-layout__sidebar--right>.c-card {
+  right: 0;
+  border-radius: 16px 0 0 16px !important;
+  transform: translateX(0);
+}
+
+.o-app-layout__sidebar--left.is-collapsed>.c-card {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.o-app-layout__sidebar--right.is-collapsed>.c-card {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.o-app-layout__sidebar--left>.c-card:not(.is-hidden),
+.o-app-layout__sidebar--right>.c-card:not(.is-hidden) {
+  flex: auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.o-app-layout__sidebar--left>.c-card:not(.is-hidden) .c-card__body,
+.o-app-layout__sidebar--right>.c-card:not(.is-hidden) .c-card__body {
+  flex: auto;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.o-app-layout__sidebar--right.is-hidden {
+  display: none;
+}
+/* ==========================================================================
+   HOME PAGE LAYOUT
+   ========================================================================== */
+
+/* Main content area with centered card */
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--rux-space-4);
+  gap: var(--rux-space-3);
+}
+
+main.c-card {
+  background: var(--rux-surface-card);
+  border: 1px solid var(--rux-border-default);
+  border-radius: var(--rux-radius-surface);
+  box-shadow: var(--card-shadow);
+  max-width: var(--app-max);
+  width: 100%;
+  margin: 0 auto;
+  padding: var(--rux-space-4);
+  overflow: visible;
+}
+
+main.c-card .c-card__body {
+  padding: var(--rux-space-4);
+  overflow: visible;
+}

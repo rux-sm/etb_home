@@ -1,0 +1,542 @@
+/* ==========================================================================
+   FORM CONTROLS
+   ========================================================================== */
+
+/* ── 1. Reset & Typography Inheritance ──────────────────────────────────── */
+
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+/* ── 2. Shared Base Styles ───────────────────────────────────────────────── */
+/* All field types share these — full border, square corners, drop shadow */
+
+input,
+select,
+textarea,
+.select-trigger {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  height: var(--form-height);
+  padding: 0 var(--input-padding-x);
+  background-color: var(--field-bg);
+  border: 1px solid var(--field-bg);
+  border-radius: var(--rux-radius-control);
+  font-size: var(--input-font-size);
+  font-weight: var(--input-weight);
+  color: var(--text-primary);
+  text-align: left;
+  outline: none;
+  cursor: text;
+  transition:
+    background-color 0.11s cubic-bezier(0.2, 0, 0.38, 0.9),
+    border-color 0.11s,
+    box-shadow 0.11s;
+}
+
+/* ── 3. Input Type Variants ──────────────────────────────────────────────── */
+
+/* Text inputs — explicit cursor */
+input[type="text"],
+input[type="tel"],
+input[type="number"] {
+  cursor: text;
+}
+
+/* Date / Time / Number — strip native chrome */
+input[type="date"],
+input[type="time"],
+input[type="number"] {
+  appearance: none;
+}
+
+/* Safari: fixed height without line-height leaves datetime-edit top-aligned */
+input[type="date"],
+input[type="time"] {
+  line-height: var(--form-height);
+}
+
+input[type="date"]::-webkit-datetime-edit,
+input[type="time"]::-webkit-datetime-edit,
+input[type="date"]::-webkit-datetime-edit-fields-wrapper,
+input[type="time"]::-webkit-datetime-edit-fields-wrapper {
+  padding-block: 0;
+}
+
+/* Calendar & time icons — white in dark mode (WebKit/Chromium) */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  color: var(--text-placeholder);
+  opacity: 1;
+  background: transparent;
+}
+
+/* Firefox (limited support) */
+input[type="date"]::-moz-calendar-picker-indicator,
+input[type="time"]::-moz-calendar-picker-indicator {
+  color: white;
+  opacity: 1;
+}
+
+/* Global calendar/time picker icon */
+::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: 0.85;
+  cursor: pointer;
+  padding: 4px;
+}
+
+::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* ── 4. Native Select ────────────────────────────────────────────────────── */
+
+select {
+  padding: 0 calc(var(--chevron-inset) + var(--chevron-size) + 10px) 0 var(--input-padding-x);
+  -webkit-appearance: none;
+  appearance: none;
+  color-scheme: dark;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right var(--chevron-inset) center;
+  background-size: var(--chevron-size);
+  line-height: 1;
+  padding-top: 0;
+  padding-bottom: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+select.select--centered {
+  text-align: center;
+  padding-left: 32px;
+}
+
+/* ── 5. Textarea ─────────────────────────────────────────────────────────── */
+
+textarea {
+  min-height: var(--form-height);
+  height: auto;
+  padding: 11px var(--input-padding-x);
+  resize: vertical;
+  line-height: 1.4;
+  cursor: text;
+}
+
+/* ── 6. Placeholder, Hover & Focus States ───────────────────────────────── */
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--text-placeholder);
+  opacity: 1;
+}
+
+input:hover,
+select:hover,
+textarea:hover,
+.select-trigger:hover {
+  /* background-color: var(--field-bg-hover);
+  border-color: var(--gray-200); */
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+.select-trigger:focus,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+.select-trigger:focus-visible {
+  outline: none;
+  border-color: var(--rux-accent-color);
+  /*box-shadow: 0 0 0 2px var(--focus-ring-color), var(--field-shadow);*/
+}
+
+/* ── 6b. Driver double-booking conflict highlight ──────────────────────────── */
+
+.select-dropdown.driver-conflict .select-trigger {
+  border-color: var(--color-warning);
+  box-shadow: 0 0 0 2px color-mix(in oklch, var(--color-warning) 30%, transparent);
+}
+
+/* Warning icon inside the dropdown list item */
+.dropdown__conflict-icon {
+  font-size: var(--icon-field-size);
+  font-variation-settings:
+    "FILL" var(--icon-field-fill),
+    "wght" var(--icon-field-wght),
+    "GRAD" var(--icon-field-grad),
+    "opsz" var(--icon-field-opsz);
+  color: var(--color-warning);
+  flex-shrink: 0;
+  margin-left: var(--icon-text-gap);
+}
+
+/* Dim the conflicting item text slightly so the icon pops */
+.driver-conflict-item {
+  color: color-mix(in oklch, var(--text-primary) 70%, var(--color-warning));
+}
+
+/* ── 7. Custom Select Widget (.select-dropdown / .select-trigger) ─────────── */
+
+.select-dropdown {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.select-dropdown .dropdown__menu {
+  inset-inline-start: 0;
+  inset-inline-end: 0;
+  min-width: 100%;
+}
+
+#busGrid .select-dropdown .dropdown__menu {
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+/* Trigger: a button styled to look like an input */
+.select-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--icon-text-gap);
+  width: 100%;
+  min-width: 0;
+  text-align: left;
+}
+
+.select-trigger:disabled {
+  opacity: var(--field-disabled-opacity);
+  cursor: not-allowed;
+  border-bottom-style: solid;
+}
+
+/* Chevron pseudo-element */
+.select-trigger::after {
+  content: "";
+  width: var(--chevron-size);
+  height: var(--chevron-size);
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: center;
+  flex-shrink: 0;
+  opacity: var(--chevron-opacity);
+}
+
+/* Open state — same focus ring as inputs */
+.select-trigger.is-open {
+  outline: 2px solid var(--rux-accent-color);
+  outline-offset: -2px;
+  border-bottom-color: transparent;
+}
+
+/* Visually-hidden native fallback for a11y */
+.select-dropdown .select-native {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* Muted icon color when trigger has no selection */
+.select-trigger.is-empty .dropdown-icon.is-active {
+  color: var(--text-placeholder);
+}
+
+/* Status icon colors inside select triggers */
+.dropdown-icon.status-pending {
+  color: var(--color-status-pending);
+}
+
+.dropdown-icon.status-ok {
+  color: var(--color-status-ok);
+}
+
+.dropdown-icon.status-assigned {
+  color: var(--color-status-assigned);
+}
+
+.dropdown-icon.status-blue {
+  color: var(--color-status-blue);
+}
+
+/* Status colors on dropdown menu items */
+.dropdown__item.status-pending,
+.dropdown__item.status-pending .dropdown-icon {
+  color: var(--rux-status-red) !important;
+}
+
+.dropdown__item.status-ok,
+.dropdown__item.status-ok .dropdown-icon {
+  color: var(--rux-status-green) !important;
+}
+
+.dropdown__item.status-assigned,
+.dropdown__item.status-assigned .dropdown-icon {
+  color: var(--rux-status-yellow) !important;
+}
+
+.dropdown__item.status-blue,
+.dropdown__item.status-blue .dropdown-icon {
+  color: var(--rux-status-blue) !important;
+}
+
+/* Status colors on the select field itself */
+.select-trigger.status-pending {
+  background-color: color-mix(in srgb, var(--rux-status-red) 20%, var(--field-bg));
+  color: var(--rux-status-red);
+}
+
+.select-trigger.status-ok {
+  background-color: color-mix(in srgb, var(--rux-status-green) 20%, var(--field-bg));
+  color: var(--rux-status-green);
+}
+
+.select-trigger.status-assigned {
+  background-color: color-mix(in srgb, var(--rux-status-yellow) 20%, var(--field-bg));
+  color: var(--rux-status-yellow);
+}
+
+.select-trigger.status-blue {
+  background-color: color-mix(in srgb, var(--rux-status-blue) 20%, var(--field-bg));
+  color: var(--rux-status-blue);
+}
+
+/* ── 8. Empty State ──────────────────────────────────────────────────────── */
+
+input[type="date"].is-empty:not(:focus)::-webkit-datetime-edit,
+input[type="time"].is-empty:not(:focus)::-webkit-datetime-edit {
+  color: var(--text-placeholder);
+}
+
+select.is-empty:not(:focus),
+.select-trigger.is-empty {
+  color: var(--text-placeholder);
+}
+
+/* ── 9. Labels ───────────────────────────────────────────────────────────── */
+
+.form-grid label,
+.form-group>label,
+.field-label {
+  display: block;
+  font-size: var(--form-label-font-size);
+  font-weight: var(--form-label-weight);
+  color: var(--rux-text-secondary);
+  line-height: 1;
+  margin-bottom: var(--form-label-margin);
+  padding-left: var(--form-label-indent);
+  letter-spacing: var(--form-label-spacing);
+  width: 100%;
+  text-shadow: var(--label-shadow);
+}
+
+/* Label text inside trip details grid rows */
+.trip-details__label {
+  grid-column: auto;
+  margin-bottom: 0;
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+/* ── 10. Specific Field Variants ─────────────────────────────────────────── */
+
+.form-control {
+  width: auto;
+}
+
+/* Itinerary modal input */
+#itineraryModalField {
+  text-align: center;
+}
+
+#itineraryModalField:focus {
+  outline: none;
+  border-color: var(--rux-accent-color);
+  box-shadow: var(--focus-ring);
+}
+
+/* Itinerary modal textarea */
+.modal--itinerary .modal__body textarea {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  resize: none;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 8px 12px;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  letter-spacing: normal;
+  font-variant-numeric: normal;
+  white-space: pre-wrap;
+  color: var(--text-secondary);
+  background: var(--rux-surface-panel);
+  border: 1px solid var(--border-default);
+  border-radius: 0;
+}
+
+/* Trip details — read-only itinerary scroll */
+.detail-text.detail-itinerary-scroll,
+.trip-details__itinerary-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  white-space: pre;
+  color: var(--text-secondary);
+  background: var(--rux-surface-panel);
+  padding: 12px;
+  line-height: 1.5;
+  letter-spacing: normal;
+  font-variant-numeric: normal;
+  border: 1px solid var(--border-default);
+  border-radius: 0;
+  text-align: center;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* ── 11. Form Grid Layout ────────────────────────────────────────────────── */
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  width: 100%;
+  gap: var(--form-row-gap) var(--form-col-gap);
+  align-items: start;
+}
+
+/* Reset stray margins on all grid children */
+.form-group,
+.col-2,
+.col-4,
+.col-5,
+.col-6,
+.col-8,
+.col-12 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* Column spans */
+.col-2 {
+  grid-column: span 2;
+}
+
+.col-4 {
+  grid-column: span 4;
+}
+
+.col-5 {
+  grid-column: span 5;
+}
+
+.col-6 {
+  grid-column: span 6;
+}
+
+.col-8 {
+  grid-column: span 8;
+}
+
+.col-12 {
+  grid-column: span 12;
+}
+
+/* Compact height for inputs inside the form grid */
+.form-grid input,
+.form-grid select,
+.form-grid textarea,
+.form-control {
+  width: 100%;
+}
+
+/* Section dividers */
+.subsection {
+  grid-column: span 12;
+  border-top: none;
+  margin-top: 0;
+  padding-top: 0;
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  height: min-content;
+}
+
+.subsection-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--form-row-gap) var(--form-col-gap);
+}
+
+hr.form-divider {
+  grid-column: span 12;
+  border: 0;
+  border-top: 1px solid var(--border-subtle);
+  margin: 0;
+  padding: 0;
+}
+
+/* ── 12. Responsive ──────────────────────────────────────────────────────── */
+
+@container form-grid (max-width: 350px) {
+
+  .col-2,
+  .col-4,
+  .col-5,
+  .col-6,
+  .col-8 {
+    grid-column: span 12;
+  }
+
+  .subsection-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    justify-content: flex-start;
+  }
+}
+
+
+/* ── Section Dividers ────────────────────────────────────────── */
+.form-divider {
+  grid-column: span 12;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: var(--form-label-gap);
+}
+
+.form-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-default);
+}
+
+.form-divider__label {
+  font-size: var(--form-section-label-size);
+  font-weight: var(--form-section-label-weight);
+  letter-spacing: var(--form-section-label-spacing);
+  text-transform: uppercase;
+  color: var(--form-section-label-color);
+  white-space: nowrap;
+  flex-shrink: 0;
+}

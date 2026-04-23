@@ -1,0 +1,599 @@
+:root {
+
+  color-scheme: dark;
+
+  /* -------------------------------------------------------------------------- */
+  /* SECTION 1: PRIMITIVE TOKENS                                                */
+  /* -------------------------------------------------------------------------- */
+
+  /* --- COLOR PALETTE --- */
+
+  --rux-color-white: oklch(0% 0 265);
+  --rux-color-black: oklch(100% 0 255);
+  --rux-color-gray: oklch(50% 0.008 260);
+  --rux-color-wine: oklch(50% 0.2 25);
+  --rux-color-dusk: oklch(50% 0.2 65);
+  --rux-color-sand: oklch(50% 0.2 100);
+  --rux-color-celt: oklch(50% 0.2 155);
+  --rux-color-teal: oklch(50% 0.2 195);
+  --rux-color-cyan: oklch(50% 0.2 210);
+  --rux-color-mana: oklch(50% 0.2 255);
+  --rux-color-void: oklch(50% 0.2 300);
+  --rux-color-pink: oklch(50% 0.2 350);
+
+  /* --- TYPOGRAPHY SCALE --- */
+
+  --rux-font-family-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --rux-font-family-mono: ui-monospace, "Roboto Mono", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --rux-font-family-icons: "Material Symbols Outlined";
+
+  --rux-font-size-1: 0.625rem;   /* 10px */
+  --rux-font-size-2: 0.6875rem;  /* 11px */
+  --rux-font-size-3: 0.75rem;    /* 12px */
+  --rux-font-size-4: 0.875rem;   /* 14px */
+  --rux-font-size-5: 1rem;       /* 16px */
+  --rux-font-size-6: 1.125rem;   /* 18px */
+  --rux-font-size-7: 1.25rem;    /* 20px */
+  --rux-font-size-8: 1.5rem;     /* 24px */
+
+  --rux-font-weight-light: 300;
+  --rux-font-weight-regular: 400;
+  --rux-font-weight-medium: 500;
+  --rux-font-weight-semibold: 600;
+  --rux-font-weight-bold: 700;
+  --rux-font-weight-black: 900;
+
+  --rux-line-height-1: 1;
+  --rux-line-height-2: 1.25;
+  --rux-line-height-3: 1.3;
+  --rux-line-height-4: 1.5;
+
+  /* --- SPACING SCALE --- */
+
+  --rux-space-0: 0px;
+  --rux-space-1: 4px;
+  --rux-space-2: 8px;
+  --rux-space-3: 12px;
+  --rux-space-4: 16px;
+  --rux-space-5: 20px;
+  --rux-space-6: 24px;
+  --rux-space-7: 28px;
+  --rux-space-8: 32px;
+
+  /* --- BORDER RADIUS SCALE --- */
+
+  --rux-radius-0: 0px;
+  --rux-radius-1: 4px;
+  --rux-radius-2: 8px;
+  --rux-radius-3: 12px;
+  --rux-radius-4: 16px;
+  --rux-radius-5: 20px;
+  --rux-radius-6: 24px;
+  --rux-radius-7: 28px;
+  --rux-radius-8: 32px;
+
+  /* --- MOTION SCALE --- */
+
+  --rux-duration-1: 110ms;
+  --rux-duration-2: 200ms;
+  --rux-duration-3: 300ms;
+
+  --rux-ease-1: cubic-bezier(0.2, 0, 0.38, 0.9); /* snappy UI interactions */
+  --rux-ease-2: cubic-bezier(0.4, 0, 0.2, 1); /* larger motion / entrances */
+
+  /* -------------------------------------------------------------------------- */
+  /* SECTION 2: SEMANTIC TOKENS                                                 */
+  /* -------------------------------------------------------------------------- */
+
+  /* 2A. Surface Colors
+  ──────────────────────────────────────────────────────────────── */
+
+  /* Elevated Surface Scale */
+  --rux-surface-base: oklch(from var(--rux-color-gray) 0% c h);
+  /* 0% - Pure black canvas */
+  --rux-surface-card: oklch(from var(--rux-color-gray) 12% c h);
+  /* 12% - Subtle lift for schedule background */
+  --rux-surface-modal: oklch(from var(--rux-color-gray) 18% c h);
+  /* 18% - Higher lift for modals */
+
+  /* App Chrome & Panels */
+  --rux-surface-app-header: oklch(from var(--rux-color-gray) 24% c h);
+  /* 24% - Structural top bar */
+  --rux-surface-panel: oklch(from var(--rux-color-gray) 24% c h);
+  /* 24% - Editor panel (darkened to let 36% buttons pop) */
+  --rux-surface-header: oklch(from var(--rux-color-gray) 24% c h);
+  /* 24% - Match panel */
+  --rux-surface-footer: oklch(from var(--rux-color-gray) 24% c h);
+  /* 24% - Match panel */
+
+  /* Floating / Overlays */
+  --rux-surface-menu: oklch(from var(--rux-color-gray) 28% c h);
+  /* 28% - Floating menus */
+  --rux-surface-overlay: oklch(from var(--rux-color-gray) 28% c h);
+  /* 28% - Tooltips/popovers */
+
+  /* Form Fields */
+  --rux-surface-input: oklch(from var(--rux-color-gray) 16% c h);
+  /* 16% - Gently inset compared to the 24% panel */
+  --rux-surface-textarea: var(--rux-surface-input);
+  /* Unified with inputs */
+
+  /* 2B. Status Colors
+  ──────────────────────────────────────────────────────────────── */
+
+  --rux-accent-color: oklch(from var(--rux-color-mana) 70% c h);
+  --rux-color-primary-button: oklch(from var(--rux-color-mana) 60% c h);
+  --rux-status-red: oklch(from var(--rux-color-wine) 75% c h);
+  --rux-status-red-alpha: oklch(from var(--rux-color-wine) l c h / 25%);
+  --rux-status-yellow: oklch(from var(--rux-color-sand) 75% c h);
+  --rux-status-yellow-alpha: oklch(from var(--rux-color-sand) l c h / 25%);
+  --rux-status-green: oklch(from var(--rux-color-celt) 80% c h);
+  --rux-status-green-alpha: oklch(from var(--rux-color-celt) l c h / 25%);
+  --rux-status-blue: oklch(from var(--rux-color-mana) 75% c h);
+  --rux-status-blue-alpha: oklch(from var(--rux-color-mana) l c h / 25%);
+
+  /* 2C. Button Colors
+  ──────────────────────────────────────────────────────────────── */
+  --rux-button-primary-bg: oklch(from var(--rux-color-mana) 60% c h);
+  --rux-button-primary-text: oklch(from var(--rux-color-gray) 92% c h);
+  --rux-button-primary-hover: oklch(from var(--rux-button-primary-bg) calc(l + var(--rux-button-hover)) c h);
+  --rux-button-primary-active: color-mix(in srgb, var(--color-accent) 70%, white);
+  --rux-button-primary-border: transparent;
+
+
+  /* 2C. Text Colors
+  ──────────────────────────────────────────────────────────────── */
+
+  --rux-text-primary: oklch(100% 0.014 250);
+  --rux-text-secondary: oklch(70% 0.014 250);
+  --rux-text-disabled: oklch(45% 0.014 250);
+  --rux-text-hover: oklch(45% 0.014 250);
+
+
+
+  /* 2D. Border Roles
+  ──────────────────────────────────────────────────────────────── */
+
+  --rux-border-subtle: oklch(100% 0 0 / 6%);
+  --rux-border-default: oklch(100% 0 0 / 20%);
+  --rux-border-hover: oklch(100% 0 0 / 30%);
+  --rux-border-focus: oklch(100% 0 0 / 100%);
+
+  /* 2E. Semantic Radius Aliases
+         See RUX_UI.md for optical nesting guide and depth reference.
+  ──────────────────────────────────────────────────────────────── */
+
+  --rux-radius-overlay: var(--rux-radius-5);
+  /* modals, popovers, sheets */
+  --rux-radius-surface: var(--rux-radius-5);
+  /* cards, panels, sidebars */
+  --rux-radius-section: var(--rux-radius-2);
+  /* groups nested inside cards */
+  --rux-radius-control: var(--rux-radius-2);
+  /* inputs, selects, toolbars */
+  --rux-radius-badge: var(--rux-radius-1);
+  /* chips, tags, mini-badges */
+  --rux-radius-button: var(--rux-radius-2);
+  /* pill / squircle buttons */
+
+  /* ============================================================
+     TIER 3 — COMPONENT TOKENS
+     Tied to specific UI elements. No --rux- prefix.
+     Reference Tier 2 tokens; avoid referencing Tier 1 directly.
+     ============================================================ */
+
+  /* 3B. Borders
+  ──────────────────────────────────────────────────────────────── */
+
+  --border-subtle: var(--rux-border-subtle);
+  --border-default: var(--rux-border-default);
+  --border-hover: var(--rux-border-hover);
+  --border-focus: var(--rux-border-focus);
+  --border: var(--border-default);
+  /* shorthand — same as --border-default */
+  --header-separator: var(--border-default);
+  /* border token — moved here from text section */
+
+  /* 3C. Text
+  ──────────────────────────────────────────────────────────────── */
+
+  --text-primary: oklch(from var(--rux-color-gray) 92% c h);
+  --text-secondary: oklch(from var(--rux-color-gray) 72% c h);
+  --text-placeholder: oklch(from var(--rux-color-gray) 52% c h);
+  --text-disabled: oklch(from var(--rux-color-gray) 42% c h);
+  --text-muted: var(--text-secondary);
+  /* alias — in heavy use; same as --text-secondary */
+
+  /* 3D. Fields / Inputs
+  ──────────────────────────────────────────────────────────────── */
+
+  --form-height: 32px;
+  /* was --rux-form-height; dropped --rux- prefix (Tier 3 token) */
+  --form-row-gap: 8px;
+  --form-col-gap: 8px;
+  --form-label-gap: 8px;
+  /* was --rux-form-label-gap; dropped --rux- prefix */
+  --form-label-margin: 4px;
+  --form-section-gap: 16px;
+  --form-label-color: oklch(from var(--rux-accent-color) 50% c h);
+  /* fixed: was var(--rux-color-mana) direct Tier 1 ref */
+  --form-label-font-size: var(--rux-font-size-3);
+  --form-label-weight: var(--rux-font-weight-medium);
+  --form-label-spacing: 0.02em;
+  --form-label-indent: 2px;
+
+  --form-section-label-color: var(--rux-text-secondary);
+  --form-section-label-size: var(--rux-font-size-3);
+  --form-section-label-weight: var(--rux-font-weight-regular);
+  --form-section-label-spacing: 0.02em;
+
+  --field-bg: var(--rux-surface-input);
+  --field-bg-hover: var(--rux-surface-panel);
+  /* not currently used */
+  --field-border: var(--rux-surface-modal);
+  --field-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  /* not currently used */
+  --field-disabled-opacity: 0.5;
+  --input-padding-x: var(--rux-space-2);
+  --input-font-size: var(--rux-font-size-4);
+  --input-weight: var(--rux-font-weight-regular);
+  /* added: was referenced in form.css but never defined */
+
+  --icon-field-size: 18px;
+  /* display size */
+  --icon-field-fill: 1;
+  /* 0 = outlined, 1 = filled */
+  --icon-field-wght: 400;
+  /* stroke weight: 100–700 */
+  --icon-field-grad: 0;
+  /* visual weight offset: -50–200 */
+  --icon-field-opsz: 18;
+  /* optical size: 20–48 */
+  --icon-field-inset: 0px;
+  /* safe inset from corner radius */
+  --icon-text-gap: 4px;
+  /* gap between icon and label */
+
+  --chevron-size: 14px;
+  /* width & height of dropdown chevron */
+  --chevron-inset: 0px;
+  /* distance from right edge */
+  --chevron-opacity: 0.8;
+  /* resting opacity */
+
+  /* 3E. Shadows & Effects
+  ──────────────────────────────────────────────────────────────── */
+
+  --heading-shadow-panel: 0px 1px 2px rgba(0, 0, 0, 0.6), 0px 2px 4px rgba(0, 0, 0, 0.3);
+  --label-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  --overlay-hover: rgba(0, 0, 0, 0.05);
+
+  --btn-shadow-inset: 0 2px 4px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  --btn-shadow-active: inset 0 2px 4px rgba(0, 0, 0, 1);
+  --btn-shadow-active-sm: inset 0 2px 4px rgba(0, 0, 0, 1);
+
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --card-shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --card-shadow-context: 0 8px 16px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  --card-shadow-left: -4px 4px 12px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --card-shadow-right: 4px 4px 12px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+  /* 3F. Buttons
+  ──────────────────────────────────────────────────────────────── */
+
+  /* Universal hover lightness lift — applied to all button variants */
+  --rux-button-hover: 0.08;
+
+  /* Primary */
+  --btn-primary-bg: oklch(from var(--rux-color-mana) 60% c h);
+  --btn-primary-text: var(--text-primary);
+  --btn-primary-hover: oklch(from var(--btn-primary-bg) calc(l + var(--rux-button-hover)) c h);
+  --btn-primary-active: color-mix(in srgb, var(--color-accent) 70%, white);
+  --btn-primary-border: transparent;
+
+  /* Secondary */
+  --btn-secondary-bg: oklch(from var(--rux-color-gray) 60% c h);
+  --btn-secondary-text: var(--text-primary);
+  --btn-secondary-hover: oklch(from var(--btn-secondary-bg) calc(l + var(--rux-button-hover)) c h);
+  --btn-secondary-active: color-mix(in srgb, var(--color-secondary) 70%, white);
+  --btn-secondary-border: transparent;
+
+  /* Danger */
+  --btn-danger-bg: oklch(from var(--rux-color-wine) 60% c h);
+  --btn-danger-text: var(--text-primary);
+  --btn-danger-hover: oklch(from var(--btn-danger-bg) calc(l + var(--rux-button-hover)) c h);
+  --btn-danger-active: color-mix(in srgb, var(--color-danger) 70%, white);
+  --btn-danger-border: transparent;
+
+  /* Success — reserved, no .btn--success class yet */
+  --btn-success-bg: var(--color-success);
+  --btn-success-text: oklch(from var(--rux-color-gray) 10% c h);
+  --btn-success-active: color-mix(in srgb, var(--color-success) 70%, white);
+
+  /* Ghost */
+  --btn-ghost-bg: transparent;
+  --btn-ghost-border: var(--border-default);
+  --btn-ghost-text: var(--text-primary);
+  --btn-ghost-hover-bg: oklch(from var(--rux-surface-panel) calc(l + var(--rux-button-hover)) c h);
+  --btn-ghost-active-bg: color-mix(in srgb, white 20%, transparent);
+  --btn-ghost-active-border: var(--rux-accent-color);
+  --btn-ghost-icon-size: 18px;
+  --btn-ghost-text-shadow: none;
+
+  /* Toolbar — reserved, no .btn--toolbar class yet */
+  --btn-toolbar-active-bg: color-mix(in srgb, white 20%, transparent);
+  --btn-toolbar-shadow-active: var(--btn-shadow-active-sm);
+  --btn-toolbar-text: var(--text-primary);
+  --btn-toolbar-border: var(--border-default);
+  --btn-toolbar-font-size: var(--rux-font-size-4);
+  --btn-toolbar-icon-size: 18px;
+  --btn-toolbar-height: 32px;
+  --btn-toolbar-min-width: 80px;
+  --btn-toolbar-padding-x: 16px;
+
+  /* Header action */
+  --header-action-bg: oklch(from var(--rux-color-gray) 40% c h);
+  --header-action-active-bg: oklch(from var(--rux-color-gray) 34% c h);
+  --header-action-color: var(--text-primary);
+
+  /* Toggle */
+  --btn-toggle-bg: oklch(from var(--rux-color-gray) 60% c h);
+  --btn-toggle-border: transparent;
+  --btn-toggle-text: var(--text-primary);
+  --btn-toggle-hover-bg: oklch(from var(--btn-toggle-bg) calc(l + var(--rux-button-hover)) c h);
+  --btn-toggle-active-bg: var(--rux-color-primary-button);
+  --btn-toggle-active-border: var(--rux-color-primary-button);
+  --btn-toggle-icon-opacity: 0.7;
+
+  /* Icon */
+  --btn-icon-bg: transparent;
+  --btn-icon-text: var(--text-secondary);
+  --btn-icon-active-bg: var(--rux-accent-color);
+  --btn-icon-disabled-bg: var(--rux-surface-modal);
+  --btn-icon-disabled-text: var(--text-disabled);
+  --btn-icon-size: 16px;
+  --btn-icon-nav-size: 24px;
+
+  /* Pagination */
+  --btn-pagination-size: 30px;
+  --btn-pagination-text: var(--text-primary);
+
+  /* Base (aluminum default — no variant class) */
+  --btn-base-bg: oklch(from var(--rux-color-gray) 36% c h);
+  --btn-base-border: oklch(from var(--rux-color-gray) 48% c h);
+  --btn-base-text: oklch(from var(--rux-color-gray) 92% c h);
+  --btn-base-hover-bg: oklch(from var(--btn-base-bg) calc(l + var(--rux-button-hover)) c h);
+  --btn-base-active-bg: oklch(from var(--rux-color-gray) 26% c h);
+
+  /* Shared sizing */
+  --btn-padding-x: 16px;
+  --btn-min-width: 80px;
+  --btn-compact-height: 24px;
+  --btn-compact-padding-x: 10px;
+
+  /* 3G. Interactive
+  ──────────────────────────────────────────────────────────────── */
+
+  --focus-ring-color: var(--rux-accent-color);
+  --focus-ring: inset 0 0 0 2px var(--focus-ring-color);
+  --transition-fast: var(--rux-duration-1) var(--rux-ease-1);
+  --control-radius-icon: 8px;
+
+  /* 3H. Spacing & Layout
+  ──────────────────────────────────────────────────────────────── */
+
+  --layout-container-max: 100%;
+  --space-xs: var(--rux-space-1);
+  /* 4px */
+  --space-sm: var(--rux-space-2);
+  /* 8px */
+  --space-md: var(--rux-space-3);
+  /* 12px */
+  --space-lg: var(--rux-space-4);
+  /* 16px */
+  --space-xl: var(--rux-space-6);
+  /* 24px — note: --rux-space-5 (20px) has no alias */
+  --panel-width: 400px;
+  --layout-panel-gap: var(--rux-space-3);
+  --card-padding: 16px;
+  --size-header-row: 40px;
+  --size-header-action: 40px;
+  --size-toolbar-action: 32px;
+  --schedule-row-height: 100px;
+  --bus-col-w: 34px;
+  --week-picker-height: 32px;
+  --day-row-h: 34px;
+  --schedule-edge-inset-right: 16px;
+  --print-scale: 1;
+  /* runtime default — JS overrides this */
+  --sync-progress: 0%;
+  /* runtime default — JS overrides this */
+  --waiting-list-dynamic-height: var(--schedule-row-height);
+  /* runtime default — JS overrides this */
+
+  /* 3I. Typography
+  ──────────────────────────────────────────────────────────────── */
+
+  --font-sans: var(--rux-font-family-sans);
+  --font-mono: var(--rux-font-family-mono);
+
+  --heading-1-size: var(--rux-font-size-5);
+  --heading-1-weight: var(--rux-font-weight-regular);
+  --heading-1-line-height: var(--rux-line-height-3);
+  --heading-1-letter-spacing: 0.5px;
+  --heading-1-color: var(--text-primary);
+
+  --heading-2-size: var(--rux-font-size-7);
+  --heading-2-weight: var(--rux-font-weight-regular);
+  --heading-2-line-height: var(--rux-line-height-2);
+  --heading-2-letter-spacing: 0.05px;
+  --heading-2-color: var(--text-primary);
+
+  /* 3J. Day Header
+  ──────────────────────────────────────────────────────────────── */
+
+  --day-header-date-color: var(--text-primary);
+  --day-header-date-size: var(--rux-font-size-4);
+  --day-header-date-weight: var(--rux-font-weight-semibold);
+  --day-header-date-letter-spacing: 0;
+  --day-header-date-line-height: var(--rux-line-height-1);
+  --day-header-name-color: var(--text-primary);
+  --day-header-name-size: var(--rux-font-size-4);
+  --day-header-name-weight: var(--rux-font-weight-regular);
+  --day-header-name-letter-spacing: 0;
+  --day-header-name-line-height: var(--rux-line-height-1);
+
+  /* 3K. Bus Column
+  ──────────────────────────────────────────────────────────────── */
+
+  --bus-num-color: var(--text-primary);
+  --bus-num-size: var(--rux-font-size-4);
+  --bus-num-weight: var(--rux-font-weight-medium);
+  --bus-num-letter-spacing: 0;
+  --bus-num-line-height: var(--rux-line-height-1);
+  --bus-lift-color: var(--rux-accent-color);
+  --bus-sleeper-color: var(--text-primary);
+  --bus-accent-color: var(--rux-surface-card);
+
+  --bus-grid-row-gap: 4px;
+  /* moved from 3D — bus layout, not form fields */
+  --bus-driver-block-gap: 4px;
+  --bus-header-margin: 4px;
+
+  /* 3L. Trip Bar
+  ──────────────────────────────────────────────────────────────── */
+
+  --tripbar-height: 99px;
+  --tripbar-radius: 7px;
+  --tripbar-lane-step: 100px;
+  --tripbar-bg-mix-percent: 100%;
+  --tripbar-dim-opacity: 0.60;
+  --tripbar-text-shadow: 0 1px 2px rgba(0, 0, 0, 1);
+  --tripbar-shadow-hover: 0 10px 20px rgba(0, 0, 0, 0.5), 0 6px 6px rgba(0, 0, 0, 0.3);
+  --tripbar-color: var(--rux-status-blue-alpha);
+  --tripbar-border-color: var(--rux-accent-color);
+
+  --tripbar-badge-text-color: var(--text-primary);
+  --tripbar-r1-color: var(--text-primary);
+  --tripbar-r2-color: var(--text-secondary);
+  --tripbar-r4-color: var(--text-primary);
+  --tripbar-time-color: var(--tripbar-r4-color);
+  --tripbar-time-color-flagged: var(--rux-status-yellow);
+  --tripbar-r5-color: var(--text-primary);
+  --tripbar-r6-color: var(--text-secondary);
+  --tripbar-r7-color: var(--text-primary);
+
+  --tripbar-hover-brightness-from: 1.05;
+  --tripbar-hover-brightness-to: 1.15;
+  --tripbar-hover-saturate-from: 1;
+  --tripbar-hover-saturate-to: 1.25;
+
+  --tripbar-inset: 0px;
+  --tripbar-inset-left: 0px;
+  --tripbar-inset-right: 1px;
+  --tripbar-inset-top: 0px;
+  --tripbar-inset-bottom: 0px;
+  --tripbar-padding-x: 0px;
+  --tripbar-padding-y: 0px;
+  --tripbar-row-gap: 1px;
+  --tripbar-gap-inline: 2px;
+  --tripbar-gap-drivers: 6px;
+
+  --tripbar-r1-font-size: var(--rux-font-size-3);
+  --tripbar-r1-row-height: 14px;
+  --tripbar-r1-font-weight: var(--rux-font-weight-medium);
+  --tripbar-r1-line-height: 14px;
+  --tripbar-r1-letter-spacing: 0.02em;
+
+  --tripbar-r2-font-size: var(--rux-font-size-2);
+  --tripbar-r2-row-height: 12px;
+  --tripbar-r2-font-weight: var(--rux-font-weight-medium);
+  --tripbar-r2-line-height: 12px;
+  --tripbar-r2-letter-spacing: 0.02em;
+
+  --tripbar-r3-row-height: 12px;
+
+  --tripbar-r4-font-size: var(--rux-font-size-3);
+  --tripbar-r4-row-height: 13px;
+  --tripbar-r4-font-weight: var(--rux-font-weight-medium);
+  --tripbar-r4-line-height: 13px;
+  --tripbar-r4-letter-spacing: 0em;
+
+  --tripbar-r5-row-height: 14px;
+
+  --tripbar-r6-font-size: var(--rux-font-size-1);
+  --tripbar-r6-row-height: 12px;
+  --tripbar-r6-font-weight: var(--rux-font-weight-regular);
+  --tripbar-r6-line-height: 12px;
+  --tripbar-r6-letter-spacing: 0.02em;
+
+  --tripbar-r7-font-size: var(--rux-font-size-3);
+  --tripbar-r7-row-height: 14px;
+  --tripbar-r7-font-weight: var(--rux-font-weight-bold);
+  --tripbar-r7-line-height: 14px;
+  --tripbar-r7-letter-spacing: 0.05em;
+
+  --tripbar-mini-badge: 14px;
+  --tripbar-badge-radius: 0;
+  --tripbar-danger-size: 16px;
+  --tripbar-danger-font: var(--rux-font-size-2);
+  --tripbar-danger-offset: 4px;
+  --tripbar-multi-badge-font-size: var(--rux-font-size-2);
+  --tripbar-multi-bus-indent: 0px;
+
+  /* 3M. Icons
+  ──────────────────────────────────────────────────────────────── */
+
+  --icon-bus-size: 18px;
+  --icon-bus-fill: 1;
+  --icon-bus-opsz: 20;
+  --icon-tripbar-size: 14px;
+  --icon-tripbar-fill: 1;
+  --icon-tripbar-opsz: 20;
+  --icon-status-size: 14px;
+  --icon-btn-size: 32px;
+
+  --icon-arrow-size: 40px;
+  /* trip bar directional arrows — moved here from 3D */
+  --icon-arrow-offset: 4px;
+
+  /* 3N. Envelope / Print
+  ──────────────────────────────────────────────────────────────── */
+
+  --env-ink: var(--text-primary);
+  --env-rule: var(--border-default);
+  --env-border: 1px;
+  --env-pad: 0.25in;
+  --env-panel-pad: 0.375in;
+  --env-section-gap: 0.125in;
+  --env-label-size: 0.625rem;
+  --env-tiny-size: 0.5625rem;
+  --env-pickup: color-mix(in srgb, var(--rux-accent-color) 12%, transparent);
+
+  /* 3O. Z-Index
+  ──────────────────────────────────────────────────────────────── */
+
+  --z-dropdown: 1000;
+  --z-modal: 10100;
+
+  /* 3P. Status & Role Mappings
+  ──────────────────────────────────────────────────────────────── */
+
+  --color-secondary: oklch(from var(--rux-color-gray) 35% c h);
+  --color-accent: var(--rux-accent-color);
+  --color-danger: var(--rux-status-red);
+  --color-danger-soft: var(--rux-status-red-alpha);
+  --color-success: var(--rux-status-green);
+  --color-warning: var(--rux-status-yellow);
+
+  --color-status-pending: var(--rux-status-red);
+  --color-status-ok: var(--rux-status-green);
+  --color-status-assigned: var(--rux-status-yellow);
+  --color-status-blue: var(--rux-status-blue);
+
+  --color-conflict-accent: var(--rux-status-red);
+  /* same value as --color-danger; kept separate in case conflict red diverges */
+  --color-conflict-bg: var(--rux-status-red-alpha);
+
+}
