@@ -101,10 +101,10 @@
   /* 24% - Structural top bar */
   --rux-surface-panel: oklch(from var(--rux-color-gray) 24% c h);
   /* 24% - Editor panel (darkened to let 36% buttons pop) */
-  --rux-surface-header: oklch(from var(--rux-color-gray) 24% c h);
-  /* 24% - Match panel */
-  --rux-surface-footer: oklch(from var(--rux-color-gray) 24% c h);
-  /* 24% - Match panel */
+  --rux-surface-header: oklch(from var(--rux-color-gray) 30% c h);
+  /* 30% - Match schedule */
+  --rux-surface-footer: oklch(from var(--rux-color-gray) 30% c h);
+  /* 30% - Match schedule */
 
   /* Floating / Overlays */
   --rux-surface-menu: oklch(from var(--rux-color-gray) 28% c h);
